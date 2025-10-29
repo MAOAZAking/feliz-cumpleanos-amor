@@ -30,8 +30,6 @@
       transform-style: preserve-3d;
       background: #fffef7;
       border: 2px solid #ffffff;
-      /* Al desplegar (volver al estado inicial), el recorte se retrasa 1.23s 
-         para esperar a que termine la animación de los pliegues. */
       transition: clip-path 0s 1.23s;
       /* Definimos la forma inicial con 6 puntos para que la animación a la forma
          final (que también tiene 6 puntos) sea suave. */
@@ -40,9 +38,38 @@
       );
     }
 
-    /* Usamos pseudo-elementos para los pliegues, manteniendo el HTML limpio */
-    .paper::before,
-    .paper::after {
+    /* El papel ahora se compone de dos mitades para la animación de doblado */
+    .paper-half {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 50%;
+      transform-style: preserve-3d;
+    }
+
+    .paper-half.top {
+      top: 0;
+      border-bottom: 1px dashed rgba(0,0,0,0.2); /* Línea de pliegue visual */
+    }
+
+    .paper-half.bottom {
+      bottom: 0;
+      /* El origen de la transformación es el borde superior de esta mitad */
+      transform-origin: top;
+      /* Transiciones:
+         - transform: para el doblado principal (1.5s).
+         - clip-path: para el recorte de las esquinas (retrasado 1.23s al desplegar). */
+      transition: transform 1.5s ease-in-out, clip-path 0s 1.23s;
+      /* Definimos la forma inicial con 6 puntos para que la animación a la forma
+         final (que también tiene 6 puntos) sea suave. */
+      clip-path: polygon(
+        0 0, 100% 0, 100% 100%, 0 100%
+      );
+    }
+
+    /* Los pliegues de las esquinas ahora están en sus respectivas mitades */
+    .paper-half::before,
+    .paper-half::after {
       content: '';
       position: absolute;
       left: 0;
@@ -55,29 +82,29 @@
     }
 
     /* Pliegue superior izquierdo (pseudo-elemento ::before) */
-    .paper::before {
+    .paper-half.top::before {
       top: -2px; /* Ajuste para evitar bordes visibles */
       left: -2px;
       transform-origin: 50% 50%; /* Pivote en el centro del elemento para la rotación 3D */
       clip-path: polygon(0 0, 100% 0%, 0 100%);
     }
 
-    /* Pliegue inferior izquierdo (pseudo-elemento ::after) */
-    .paper::after {
-      bottom: -2px; /* Ajuste para evitar bordes visibles */
+    /* Pliegue inferior izquierdo (pseudo-elemento ::before de la mitad inferior) */
+    .paper-half.bottom::before {
+      bottom: -2px;
       left: -2px;
       transform-origin: 0 0; /* Pivote en esquina superior izquierda */
       clip-path: polygon(0 0, 100% 100%, 0 100%);
     }
 
     /* --- ESTADO PLEGADO --- */
-    .paper.folded::before {
+    .paper.folded .paper-half.top::before {
       /* rotate3d(x, y, z, angulo) */
       /* El vector (1, -1, 0) define el eje de pliegue a 45 grados sobre la hipotenusa correcta */
       transform: rotate3d(1, -1, 0, 180deg);
     }
 
-    .paper.folded::after {
+    .paper.folded .paper-half.bottom::before {
       /* El vector (1, 1, 0) define el eje de pliegue a 45 grados para esta esquina */
       transform: rotate3d(1, 1, 0, 180deg);
     }
@@ -91,6 +118,13 @@
       /* Al plegar, el recorte tiene un retraso mínimo (50ms) para evitar el parpadeo inicial.
          Esto sobreescribe la transición del estado base. */
       transition: clip-path 0s 50ms;
+    }
+
+    /* --- ESTADO DOBLADO POR LA MITAD --- */
+    .paper.folded-in-half .paper-half.bottom {
+      /* Doblamos la mitad inferior 180 grados sobre su borde superior */
+      transform: rotateX(-180deg);
+      z-index: 1; /* Aseguramos que se pliegue por encima de la mitad superior */
     }
 
 
@@ -115,6 +149,8 @@
 
   <div class="scene">
     <div class="paper" id="paper">
+      <div class="paper-half top"></div>
+      <div class="paper-half bottom"></div>
     </div>
     <button class="btn" id="foldBtn">Doblar Esquinas</button>
   </div>
@@ -126,8 +162,29 @@
 
     btn.addEventListener('click', () => {
       folded = !folded;
-      paper.classList.toggle('folded', folded);
-      btn.textContent = folded ? "Reiniciar Hoja" : "Doblar Esquinas";
+
+      if (folded) {
+        // Secuencia de doblado automático
+        btn.disabled = true; // Desactivamos el botón
+        btn.textContent = "Doblando...";
+
+        // 1. Doblar esquinas
+        paper.classList.add('folded');
+
+        // 2. Después de que las esquinas se doblen, doblar por la mitad
+        setTimeout(() => {
+          paper.classList.add('folded-in-half');
+          // Cuando todo termina, actualizamos el botón
+          setTimeout(() => {
+            btn.textContent = "Reiniciar Hoja";
+            btn.disabled = false;
+          }, 1500); // Duración del segundo pliegue
+        }, 1230); // Duración del primer pliegue
+      } else {
+        // Reiniciar todo
+        paper.classList.remove('folded-in-half', 'folded');
+        btn.textContent = "Doblar Esquinas";
+      }
     });
   </script>
 
