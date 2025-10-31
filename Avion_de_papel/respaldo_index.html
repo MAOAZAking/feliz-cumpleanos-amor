@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Papel — Pliegue a 45 grados</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #0f1321;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scene {
+      width: 70vw; /* Ancho de la escena al 70% del viewport */
+      aspect-ratio: 8 / 5; /* La altura es 5/8 del ancho */
+      position: relative;
+      perspective: 1800px;
+      /* Definimos el tamaño del pliegue para usarlo en toda la animación */
+      --fold-size: calc(70vw * 5 / 8 * 0.5); /* El pliegue es la mitad de la altura */
+    }
+
+    .paper {
+      position: absolute;
+      inset: 0;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+      transform-style: preserve-3d;
+      /* Hacemos el contenedor principal transparente. El color estará en las mitades. */
+      background: transparent;
+      transition: clip-path 0s 1.23s;
+      /* Definimos la forma inicial con 6 puntos para que la animación a la forma
+         final (que también tiene 6 puntos) sea suave. */
+      clip-path: polygon(
+        0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 0 0
+      );
+    }
+
+    /* El papel ahora se compone de dos mitades para la animación de doblado */
+    .paper-half {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 50%;
+      transform-style: preserve-3d;
+      /* Movemos el color del papel a las mitades que se animan */
+      background: #fffef7;
+    }
+
+    .paper-half.top {
+      top: 0;
+      border-bottom: 1px dashed rgba(0,0,0,0.2); /* Línea de pliegue visual */
+    }
+
+    .paper-half.bottom {
+      bottom: 0;
+      /* El origen de la transformación es el borde superior de esta mitad */
+      transform-origin: top;
+      /* Transiciones:
+         - transform: para el doblado principal (1.5s).
+         - clip-path: para el recorte de las esquinas (retrasado 1.23s al desplegar). */
+      transition: transform 1.5s ease-in-out, clip-path 0s 1.23s;
+      clip-path: polygon(
+        0 0, 100% 0, 100% 100%, 0 100%
+      );
+    }
+
+    .fold {
+      content: '';
+      position: absolute;
+      left: 0;
+      /* El tamaño del cuadrado define el tamaño del pliegue. 
+         Aquí es el 50% de la altura del papel. */
+      width: var(--fold-size); 
+      height: var(--fold-size);
+      /* Hacemos que el pliegue parezca la parte trasera del papel */
+      background: #f0f0e6; /* Un tono ligeramente más oscuro que #fffef7 */
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.15); /* Sombra interior para dar profundidad */
+      transition: transform 1.23s ease-in-out; /* Animamos el pliegue con la duración deseada */
+    }
+
+    .fold.top-left {
+      top: -2px; /* Ajuste para evitar bordes visibles */
+      left: -2px;
+      transform-origin: 50% 50%; /* Pivote en el centro del elemento para la rotación 3D */
+      clip-path: polygon(0 0, 100% 0%, 0 100%);
+    }
+
+    .fold.bottom-left {
+      bottom: -2px;
+      left: -2px;
+      transform-origin: 0 0; /* Pivote en esquina superior izquierda */
+      clip-path: polygon(0 0, 100% 100%, 0 100%);
+    }
+
+    /* El z-index es necesario para que la mitad inferior se pliegue sobre la superior */
+    .paper-half.bottom { z-index: 1; }
+
+    .btn {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #007aff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scene">
+    <div class="paper" id="paper">
+      <div class="paper-half top">
+        <!-- Pliegue de la esquina superior izquierda -->
+        <div class="fold top-left"></div>
+      </div>
+      <div class="paper-half bottom">
+        <!-- Pliegue de la esquina inferior izquierda -->
+        <div class="fold bottom-left"></div>
+      </div>
+    </div>
+    <button class="btn" id="foldBtn">Doblar Esquinas</button>
+  </div>
+
+  <script>
+    const btn = document.getElementById('foldBtn');
+    const paperHalfTop = document.querySelector('.paper-half.top');
+    const paperHalfBottom = document.querySelector('.paper-half.bottom');
+    const foldTopLeft = document.querySelector('.fold.top-left');
+    const foldBottomLeft = document.querySelector('.fold.bottom-left');
+
+    let folded = false;
+
+    btn.addEventListener('click', () => {
+      folded = !folded;
+
+      if (folded) {
+        btn.disabled = true;
+        btn.textContent = "Doblando...";
+
+        // 1. Doblar la esquina superior izquierda
+        foldTopLeft.style.transform = 'rotate3d(1, -1, 0, 180deg)';
+        setTimeout(() => {
+          paperHalfTop.style.clipPath = 'polygon(var(--fold-size) 0, 100% 0, 100% 100%, 0 100%)';
+        }, 50);
+
+        // 2. Después de que la primera esquina se dobla, doblar la segunda
+        setTimeout(() => {
+          foldBottomLeft.style.transform = 'rotate3d(1, 1, 0, 180deg)';
+          setTimeout(() => {
+            paperHalfBottom.style.clipPath = 'polygon(0 0, 100% 0, 100% 100%, var(--fold-size) 100%)';
+          }, 50);
+
+          // 3. Después de que la segunda esquina se dobla, doblar por la mitad
+          setTimeout(() => {
+            paperHalfBottom.style.transform = 'rotateX(-180deg)';
+
+            // 4. Al final de toda la animación, reactivar el botón
+            setTimeout(() => {
+              btn.textContent = "Reiniciar Hoja";
+              btn.disabled = false;
+            }, 1500); // Duración del doblez por la mitad
+
+          }, 1230); // Duración del doblez de la segunda esquina
+
+        }, 1230); // Duración del doblez de la primera esquina
+
+      } else {
+        // Reiniciar todo a su estado original
+        btn.textContent = "Doblar Esquinas";
+        btn.disabled = true;
+
+        // 1. Desdoblar por la mitad
+        paperHalfBottom.style.transform = 'rotateX(0deg)';
+
+        // 2. Después de desdoblar por la mitad, desdoblar la esquina inferior
+        setTimeout(() => {
+          foldBottomLeft.style.transform = 'rotate3d(1, 1, 0, 0deg)';
+          paperHalfBottom.style.clipPath = ''; // Restablece al valor del CSS
+
+          // 3. Después de desdoblar la esquina inferior, desdoblar la superior
+          setTimeout(() => {
+            foldTopLeft.style.transform = 'rotate3d(1, -1, 0, 0deg)';
+            paperHalfTop.style.clipPath = ''; // Restablece al valor del CSS
+
+            // 4. Reactivar el botón al final
+            btn.disabled = false;
+          }, 1230); // Duración del desdoblez de la esquina inferior
+
+        }, 1500); // Duración del desdoblez por la mitad
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Papel con Borde Irregular</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #333; /* Fondo oscuro para que la hoja resalte */
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .paper-note {
+            /* --- Estilos básicos de la hoja --- */
+            width: 70vw;
+            max-width: 400px;
+            height: 80vh;
+            max-height: 560px;
+            background-color: #fffef0; /* Color de papel antiguo */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+            /* --- ¡Aquí ocurre la magia! --- */
+            /* Aplicamos el filtro SVG que definimos en el HTML */
+            filter: url(#paper-texture-filter);
+
+            /* --- Estilos adicionales para el contenido --- */
+            padding: 40px;
+            box-sizing: border-box; /* Para que el padding no afecte el tamaño total */
+            color: #444;
+            font-family: 'Georgia', serif;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .paper-note h1 {
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 
+      Este SVG está oculto, solo sirve para definir el filtro 
+      que usaremos en nuestro CSS. No ocupa espacio visual.
+    -->
+    <svg style="display: none;">
+        <filter id="paper-texture-filter">
+            <!-- 
+              Genera un ruido fractal (Perlin noise).
+              - baseFrequency: Controla qué tan "zoom" o "movido" es el ruido. 
+                Valores más bajos = ondas más suaves. Valores más altos = más granulado.
+              - numOctaves: Añade capas de detalle al ruido. Más octavas = más complejo.
+            -->
+            <feTurbulence 
+                type="fractalNoise" 
+                baseFrequency="0.02" 
+                numOctaves="5" 
+                result="noise" />
+            
+            <!--
+              Usa el ruido generado ("noise") para desplazar los píxeles del elemento.
+              - in="SourceGraphic": Le dice que actúe sobre el elemento original.
+              - scale: La intensidad del desplazamiento. ¡Este es el valor clave para controlar
+                qué tan "roto" o irregular es el borde!
+            -->
+            <feDisplacementMap 
+                in="SourceGraphic" 
+                in2="noise" 
+                scale="15" 
+                xChannelSelector="R" 
+                yChannelSelector="G" />
+        </filter>
+    </svg>
+
+    <!-- Este es el contenedor que simula la hoja de papel -->
+    <div class="paper-note">
+        <h1>Mi Nota Especial</h1>
+        <p>Este es un ejemplo de una hoja de papel con bordes irregulares. Como puedes ver, los bordes no son rectos, lo que le da un aspecto mucho más orgánico y artesanal.</p>
+        <p>Puedes ajustar el valor de `scale` en el filtro `feDisplacementMap` para hacer los bordes más o menos irregulares. ¡Experimenta con ello!</p>
+    </div>
+
+</body>
+</html>

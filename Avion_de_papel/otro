@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoja de Papel</title>
+  <style>
+    /* Establecer un fondo y centrar la escena */
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Contenedor de la escena en 3D */
+    .scene {
+      perspective: 1000px; /* Perspectiva para la animación en 3D */
+    }
+
+    /* La hoja de papel */
+    .paper {
+      width: 1000px;
+      height: 600px;
+      background: transparent; /* El fondo es transparente para las caras */
+      transform-style: preserve-3d; /* Mantiene las transformaciones en 3D */
+      transform: rotateX(0deg); /* Inicialmente no tiene rotación */
+      transition: transform 1s; /* Transición suave para el cambio de rotación */
+    }
+
+    /* Estilos de las caras de la hoja */
+    .face {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      backface-visibility: hidden; /* Oculta la parte trasera de la cara cuando se voltea */
+    }
+
+    /* Cara frontal de la hoja (color amarillo) */
+    .front {
+      background-color: rgb(250, 245, 150); /* Amarillo */
+    }
+
+    /* Cara trasera de la hoja (color azul claro) */
+    .back {
+      background-color: rgb(107, 233, 255); /* Azul claro */
+      transform: rotateY(180deg); /* Voltea la cara trasera 180 grados */
+    }
+
+    /* Botón para girar la hoja */
+    .btn {
+      position: absolute;
+      bottom: 20px;
+      background-color: #007aff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Contenedor de la escena -->
+  <div class="scene">
+    <!-- La hoja de papel con sus caras -->
+    <div class="paper" id="paper">
+      <div class="face front"></div> <!-- Cara frontal -->
+      <div class="face back"></div>  <!-- Cara trasera -->
+    </div>
+  </div>
+
+  <!-- Botón para girar la hoja -->
+  <button class="btn" id="flipBtn">Voltear Hoja</button>
+
+  <script>
+    const flipButton = document.getElementById('flipBtn');
+    const paper = document.getElementById('paper');
+    let isFlipped = false;
+
+    // Evento para voltear la hoja
+    flipButton.addEventListener('click', () => {
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        paper.style.transform = 'rotateY(180deg)';  // Gira la hoja 180 grados
+        flipButton.textContent = 'Voltear de nuevo'; // Cambiar texto del botón
+      } else {
+        paper.style.transform = 'rotateY(0deg)';    // Vuelve a la posición inicial
+        flipButton.textContent = 'Voltear Hoja';    // Cambiar texto del botón
+      }
+    });
+  </script>
+
+</body>
+</html>

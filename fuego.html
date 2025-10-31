@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación de Fuego</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000; /* Fondo negro para que el fuego resalte */
+        }
+
+        .fire {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-top: -50px; /* Subimos un poco el fuego para mejor visualización */
+            /* Filtros ajustados para una fusión más suave y etérea */
+            filter: blur(20px) contrast(45);
+        }
+
+        .particle {
+            position: absolute;
+            bottom: 0;
+            left: 50%; /* Todas las partículas nacen del centro */
+            border-radius: 50%;
+            background-color: #ffc281; /* Un color base anaranjado claro */
+            /* La animación ahora usa variables CSS para una aleatoriedad total */
+            animation: rise var(--d) infinite ease-in-out;
+            transform: translateX(-50%);
+            width: var(--s);
+            height: var(--s);
+            /* La sombra crea el resplandor del fuego, con un núcleo más brillante */
+            box-shadow: 0 -10px 20px 5px #fff, /* Resplandor blanco superior */
+                        0 0 15px 10px #ffc281, /* Resplandor base */
+                        0 0 25px 20px #ff8c00, /* Naranja oscuro */
+                        0 0 35px 25px #d23a00;  /* Rojo (dispersión reducida) */
+        }
+        
+        @keyframes rise {
+            0% {
+                transform: translateY(0) translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                /* La posición final y la escala son controladas por las variables aleatorias */
+                transform: translateY(calc(var(--y) * -1px)) translateX(calc(var(--x) - 50%)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fire">
+        <!-- Aumentamos el número de partículas para un fuego más denso y vivo -->
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+
+    <script>
+        // Este script asigna valores aleatorios a cada partícula para un efecto de fuego más natural.
+        document.querySelectorAll('.particle').forEach(particle => {
+            let x, y, size, duration, delay;
+
+            // El 20% de las partículas serán "puntas" rápidas y altas. El 80% será el cuerpo de la llama.
+            if (Math.random() < 0.2) {
+                // --- PUNTAS DE LA LLAMA ---
+                // Se mueven más lejos horizontalmente
+                x = (Math.random() - 0.5) * 250; 
+                // Viajan mucho más alto
+                y = 300 + Math.random() * 150;
+                // Son más pequeñas
+                size = 10 + Math.random() * 20;
+                // Son más rápidas
+                duration = 0.8 + Math.random() * 0.5;
+                delay = Math.random() * 1;
+            } else {
+                // --- CUERPO DE LA LLAMA ---
+                // Desplazamiento horizontal final (entre -80px y 80px)
+                x = (Math.random() - 0.5) * 160;
+                // Altura final (entre 180px y 280px)
+                y = 180 + Math.random() * 100;
+                // Tamaño de la partícula (entre 40px y 70px)
+                size = 40 + Math.random() * 30;
+                // Duración de la animación (entre 1.5s y 2.5s)
+                duration = 1.5 + Math.random();
+                // Retraso de la animación (entre 0s y 1.5s)
+                delay = Math.random() * 1.5;
+            }
+
+            particle.style.setProperty('--x', `${x}px`);
+            particle.style.setProperty('--y', `${y}`);
+            particle.style.setProperty('--s', `${size}px`);
+            particle.style.setProperty('--d', `${duration}s`);
+            particle.style.animationDelay = `${delay}s`;
+        });
+    </script>
+</body>
+</html>
+
+##############################################################################################################3
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación de Fuego</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000; /* Fondo negro para que el fuego resalte */
+        }
+
+        .fire {
+            position: relative;
+            width: 40px;  /* Redimensionado a 40px */
+            height: 40px; /* Redimensionado a 40px */
+            margin-top: -10px; /* Ajuste para que se vea bien */
+            filter: blur(5px) contrast(45); /* Filtro menos difuso */
+        }
+
+        .particle {
+            position: absolute;
+            bottom: 0;
+            left: 50%; /* Todas las partículas nacen del centro */
+            border-radius: 50%;
+            background-color: #ffc281; /* Un color base anaranjado claro */
+            animation: rise var(--d) infinite ease-in-out;
+            transform: translateX(-50%);
+            width: var(--s);
+            height: var(--s);
+            box-shadow: 0 -5px 10px 2px #fff, /* Resplandor blanco superior */
+                        0 0 5px 3px #ffc281, /* Resplandor base */
+                        0 0 10px 8px #ff8c00, /* Naranja oscuro */
+                        0 0 15px 12px #d23a00;  /* Rojo (dispersión reducida) */
+        }
+        
+        @keyframes rise {
+            0% {
+                transform: translateY(0) translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(var(--y) * -1px)) translateX(calc(var(--x) - 50%)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fire">
+        <!-- Reduce el número de partículas si deseas un fuego más pequeño -->
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+
+    <script>
+        // Este script asigna valores aleatorios a cada partícula para un efecto de fuego más natural.
+        document.querySelectorAll('.particle').forEach(particle => {
+            let x, y, size, duration, delay;
+
+            // El 20% de las partículas serán "puntas" rápidas y altas. El 80% será el cuerpo de la llama.
+            if (Math.random() < 0.2) {
+                // --- PUNTAS DE LA LLAMA ---
+                x = (Math.random() - 0.5) * 50;  // Movimiento horizontal limitado
+                y = 60 + Math.random() * 50;    // Altura reducida
+                size = 5 + Math.random() * 5;   // Tamaño más pequeño
+                duration = 0.5 + Math.random() * 0.5;  // Animación más rápida
+                delay = Math.random() * 1;
+            } else {
+                // --- CUERPO DE LA LLAMA ---
+                x = (Math.random() - 0.5) * 30;  // Movimiento horizontal limitado
+                y = 30 + Math.random() * 30;     // Altura reducida
+                size = 10 + Math.random() * 5;   // Tamaño pequeño
+                duration = 1 + Math.random();    // Duración moderada
+                delay = Math.random() * 1;
+            }
+
+            particle.style.setProperty('--x', `${x}px`);
+            particle.style.setProperty('--y', `${y}`);
+            particle.style.setProperty('--s', `${size}px`);
+            particle.style.setProperty('--d', `${duration}s`);
+            particle.style.animationDelay = `${delay}s`;
+        });
+    </script>
+</body>
+</html>

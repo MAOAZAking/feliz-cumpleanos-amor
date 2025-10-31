@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrella 3D con CSS</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5; /* Un fondo claro para que la sombra se vea bien */
+        }
+
+        .star-container {
+            width: 15px;
+            height: 15px;
+            position: relative;
+            /* La sombra se aplica al contenedor para un efecto limpio */
+            filter: drop-shadow(0 15px 8px rgba(0, 0, 0, 0.25));
+        }
+
+        .star {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            /* 1. El color y el brillo de la superficie de la estrella */
+            background: radial-gradient(ellipse at center, #ffee9c 0%, #ffc107 100%);
+            /* 2. El efecto de extrusión 3D aumentado para mayor altura */
+            box-shadow:
+                0 1px 0 #c29300, 0 2px 0 #c29300, 0 3px 0 #c29300,
+                0 4px 0 #c29300, 0 5px 0 #c29300, 0 6px 0 #c29300,
+                0 7px 0 #c29300, 0 8px 0 #c29300, 0 9px 0 #c29300,
+                0 10px 0 #c29300, 0 11px 0 #c29300, 0 12px 0 #c29300,
+                0 13px 0 #c29300, 0 14px 0 #c29300, 0 15px 0 #c29300;
+            /* 3. Un clip-path de alta definición para puntas redondeadas y suaves */
+            clip-path: polygon(
+                50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+            );
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="star-container">
+        <div class="star"></div>
+    </div>
+
+</body>
+</html>
