@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- tipo de letra para el número de las velas -->
+  <link href="https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap" rel="stylesheet">
+  <!--tipo de letra para la nota de papel -->
+  <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap" rel="stylesheet">
   <title>Pastel de Cumpleaños</title>
   <style>
     body {
@@ -23,6 +27,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-top: 180px; /* 🔹 Mueve todo el pastel 30px hacia abajo */
     }
     .cake-container {
       position: relative;
@@ -95,7 +100,7 @@
 
     .candles {
       position: absolute;
-      top: -20vw; /* Relativo */
+      top: -21vw; /* Relativo */
       display: flex;
       align-items: flex-end;
       gap: 1vw; /* Relativo */
@@ -125,7 +130,7 @@
       height: 30vw; /* Relativo */
       font-size: 24vw; /* Relativo */
       font-weight: bold;
-      font-family: "Comic Sans MS", cursive, sans-serif; /* Usamos Comic Sans */
+      font-family: 'Spicy Rice', cursive; /* Usamos Comic Sans */
       color: transparent; /* Hacemos el número invisible para que se vea solo el fondo con rayas */
       background: repeating-linear-gradient(
         45deg, 
@@ -152,7 +157,7 @@
       height: 24vw; /* Relativo */
       font-size: 24vw; /* Relativo */
       font-weight: bold;
-      font-family: "Comic Sans MS", cursive, sans-serif; /* Usamos Comic Sans */
+      font-family: 'Spicy Rice', cursive; /* Usamos Comic Sans */
       color: transparent;
       background: repeating-linear-gradient(
         45deg, 
@@ -170,9 +175,9 @@
       position: relative;
       width: 15vw; /* Relativo */
       height: 30vw; /* Relativo */
-      font-size: 22.4vw; /* Relativo */
+      font-size: 24vw; /* Relativo */
       font-weight: bold;
-      font-family: "Comic Sans MS", cursive, sans-serif; /* Usamos Comic Sans */
+      font-family: 'Spicy Rice', cursive; /* Usamos Comic Sans */
       color: transparent; /* Hacemos el número invisible para que se vea solo el fondo con rayas */
       background: repeating-linear-gradient(
           45deg, 
@@ -197,9 +202,9 @@
       left: 0;
       width: 15vw; /* Relativo */
       height: 24vw; /* Relativo */
-      font-size: 22.4vw; /* Relativo */
+      font-size: 24vw; /* Relativo */
       font-weight: bold;
-      font-family: "Comic Sans MS", cursive, sans-serif; /* Usamos Comic Sans */
+      font-family: 'Spicy Rice', cursive; /* Usamos Comic Sans */
       color: transparent;
       background: repeating-linear-gradient(
           45deg, 
@@ -361,14 +366,17 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.6); /* Fondo semitransparente */
+      /* Fondo semitransparente + desenfoque */
+      background-color: rgba(0, 0, 0, 0.2); /* Un poco de oscurecido para contraste */
+      backdrop-filter: blur(10px); /* 🔥 Aquí ocurre el desenfoque */
+      -webkit-backdrop-filter: blur(10px); /* Compatibilidad con Safari */
       z-index: 10000;
       display: flex;
       justify-content: center;
       align-items: center;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
     .note-container.visible {
@@ -381,7 +389,7 @@
       padding: 30px 40px;
       border-radius: 5px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      font-family: 'Comic Sans MS', cursive, sans-serif; /* Misma fuente que las velas */
+      font-family: 'Emilys Candy', cursive; /* Misma fuente que las velas */
       font-size: 28px; /* Aumentado */
       color: #333;
       text-align: center;
@@ -425,9 +433,89 @@
       .star-7 { top: 200px; left: 225px; }
       .star-8 { top: 225px; left: 330px; }
     }
+
+    /* --- Estilos para los títulos en la parte superior --- */
+.titulo1 {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: #ff1493;
+  font-family: 'Emilys Candy', cursive;
+  text-shadow: 2px 2px 6px rgba(255, 0, 150, 0.4);
+  z-index: 100;
+  margin: 0;
+}
+
+/* Título principal */
+.titulo1 {
+  top: 2vw;
+  font-size: 7vw;
+  animation: glowTitle1 3s ease-in-out infinite alternate;
+}
+
+/* Animación de brillo para el título principal */
+@keyframes glowTitle1 {
+  from {
+    text-shadow: 0 0 10px #ff69b4, 0 0 15px #ff69b4, 0 0 20px #ff1493;
+  }
+  to {
+    text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 45px #ff69b4;
+  }
+}
+
+.contenedortitlulo2 {
+  position: absolute; /* necesario si los hijos son absolute */
+  width: 100vw;
+  height: 100vw;
+  overflow: hidden;  /* evita barras de scroll si algo se escala */
+  animation: fadeInTitle2 2s ease-in-out forwards;
+}
+
+/* Título animado */
+.titulo2 {
+  position: absolute;   /* para poder moverlo libremente */
+  top: 14vw;             /* punto de referencia vertical */
+  left: 50%;            /* punto de referencia horizontal */
+  width: 100%;
+  text-align: center;
+  color: #ae00ff;
+  font-family: 'Emilys Candy', cursive;
+  text-shadow: 2px 2px 6px rgba(119, 0, 255, 0.514);
+  z-index: 100;
+  margin: 0;
+  transform: translateX(-50%);
+  transform-origin: center center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.3); }
+}
+
+/*10,20,30 -> 10,15,20
+20,40,60 -> 15,30,45 */
+
+@keyframes fadeInTitle2 {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
   </style>
 </head>
 <body>
+  <h1 class="titulo1">
+    ¡Feliz Cumpleaños Amor!
+  </h1>
+  <br>
+  <br>
+  <div class="contenedortitlulo2">
+    <h2 class="titulo2">
+    Toca para apagar las velas
+    <br>
+    Pero antes pide 1 deseo
+  </h2>
+  </div>
   <div class="cake-wrapper">
     <div class="cake-container">
       <div class="cake">
@@ -483,14 +571,14 @@
   <!-- Contenedor de la nota de papel (inicialmente oculto) -->
   <div class="note-container" id="note-container">
     <div class="paper-note">
-      ¡Feliz Cumpleaños, mi amor!<br>Eres lo mejor que me ha pasado.<br>Te amo ❤️
+      ¡Feliz Cumpleaños, mi cielito!<br>Dios me la bendiga siempre<br>Me la guarde donde quiera que vayas<br>Y que sea Él consediendote<br>Todos los deseos de tu coraz❤️n<br>No olvides que te amo al ∞ y + allá<br>Atte: Tú ángel 😇.
     </div>
   </div>
   
   <!-- Audio para la canción de cumpleaños -->
   <audio id="birthday-song" loop>
     <!-- IMPORTANTE: Reemplaza la URL de abajo con tu enlace directo de Google Drive -->
-    <source src="https://drive.google.com/uc?export=download&id=TU_ID_DE_ARCHIVO_AQUI" type="audio/mp3">
+    <source src="musica/Cancion de feliz cumpleaños by MAOAZA_king.mp3" type="audio/mp3">
   </audio>
 
   <script>
