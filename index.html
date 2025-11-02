@@ -439,16 +439,17 @@
   position: absolute;
   width: 100%;
   text-align: center;
-  color: #ff1493;
+  color: #ff0088;
   font-family: 'Emilys Candy', cursive;
   text-shadow: 2px 2px 6px rgba(255, 0, 150, 0.4);
+  -webkit-text-stroke: 0.2px black; /* 🔹 Añade un borde negro de 2px a las letras */
   z-index: 100;
   margin: 0;
 }
 
 /* Título principal */
 .titulo1 {
-  top: 2vw;
+  top: 10px;
   font-size: 7vw;
   animation: glowTitle1 3s ease-in-out infinite alternate;
 }
@@ -466,7 +467,7 @@
 .contenedortitlulo2 {
   position: absolute; /* necesario si los hijos son absolute */
   z-index: 9999;
-  top: 20px;
+  top: 10px;
   width: 100vw;
   height: 100vw;
   overflow: hidden;  /* evita barras de scroll si algo se escala */
@@ -482,6 +483,7 @@
   text-align: center;
   color: #ae00ff;
   font-family: 'Emilys Candy', cursive;
+  font-size: 4vw;
   text-shadow: 6px 6px 6px rgb(255, 255, 255), -6px -6px 6px rgb(255, 255, 255), 6px -6px 6px rgb(255, 255, 255), -6px 6px 6px rgb(255, 255, 255), 0 0 10px rgba(174, 0, 255, 0.7), 0 0 20px rgba(174, 0, 255, 0.7), 0 0 30px rgba(174, 0, 255, 0.7);
   z-index: 100;
   margin: 0;
