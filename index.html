@@ -465,7 +465,8 @@
 
 .contenedortitlulo2 {
   position: absolute; /* necesario si los hijos son absolute */
-  top: 10vw;
+  z-index: 9999;
+  top: 20px;
   width: 100vw;
   height: 100vw;
   overflow: hidden;  /* evita barras de scroll si algo se escala */
@@ -481,7 +482,7 @@
   text-align: center;
   color: #ae00ff;
   font-family: 'Emilys Candy', cursive;
-  text-shadow: 2px 2px 6px rgba(119, 0, 255, 0.514);
+  text-shadow: 6px 6px 6px rgb(255, 255, 255), -6px -6px 6px rgb(255, 255, 255), 6px -6px 6px rgb(255, 255, 255), -6px 6px 6px rgb(255, 255, 255), 0 0 10px rgba(174, 0, 255, 0.7), 0 0 20px rgba(174, 0, 255, 0.7), 0 0 30px rgba(174, 0, 255, 0.7);
   z-index: 100;
   margin: 0;
   transform: translateX(-50%);
